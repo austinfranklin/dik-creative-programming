@@ -1,8 +1,7 @@
 // this is what every effect points at until you call tap()
 var current = document.body;
 
-// keeps track of what's running on each element, so stop/stopAll know
-// what to cancel
+// keeps track of what's running on each element
 var registry = new Map();
 
 function reg(el) {
@@ -10,8 +9,7 @@ function reg(el) {
   return registry.get(el);
 }
 
-// starts an animation and remembers it by name — calling the same
-// effect twice just restarts it instead of piling up duplicates
+// starts an animation and remembers it by name
 function play(name, keyframes, options) {
   var el = current;
   var r = reg(el);
@@ -21,8 +19,7 @@ function play(name, keyframes, options) {
   return anim;
 }
 
-// same idea as play(), but for stuff that isn't a CSS property —
-// currentTime, volume, playbackRate — so it's setInterval instead
+// same idea as play(), but for stuff that isn't a CSS property
 window.__intervals = window.__intervals || [];
 function every(fn, ms) {
   var id = setInterval(fn, ms);
@@ -30,10 +27,9 @@ function every(fn, ms) {
   return id;
 }
 
-// ---------- targeting ----------
+// targeting
 
-// points everything at one element. pass a selector, an element
-// (like $0 from devtools), or nothing to go back to the body
+// points everything at one element
 function tap(target) {
   var el = typeof target === 'string' ? document.querySelector(target) : target;
   if (target && !el) { console.warn('nothing matches:', target); return; }
@@ -46,8 +42,7 @@ function tap(target) {
   }
 }
 
-// click something on the page to tap it instead of hunting through
-// devtools. hover to preview, click to lock it in, esc to cancel
+// click something on the page to tap it
 function pick() {
   console.log('click something to tap it, esc to cancel');
 
@@ -86,7 +81,7 @@ function all(selector, fn, stagger) {
   });
 }
 
-// ---------- timing ----------
+// timing
 
 // setTimeout, just shorter to type
 function after(ms, fn) {
@@ -102,15 +97,9 @@ function sequence(steps) {
   });
 }
 
-// ---------- effects ----------
-// these all act on whatever's currently tapped. the transform-based
-// ones (breathe, flip, dance, drift, tilt, skew, stretch, shake) use
-// composite: 'add' so you can run several at once and they blend
-// together instead of overwriting each other. opacity and filter
-// ones (pulse, invert, hue) don't bother — stacking two opacity
-// fades doesn't really mean anything, so the newer one just takes
-// over.
+// effects
 
+// these all act on whatever's currently tapped
 function breathe() {
   return play('breathe', [
     { transform: 'scale(1)' },
@@ -183,6 +172,7 @@ function shake() {
   ], { duration: 180, iterations: Infinity, easing: 'linear', composite: 'add' });
 }
 
+// color
 function invert() {
   return play('invert', [
     { filter: 'invert(0)' },
@@ -198,10 +188,9 @@ function hue() {
   ], { duration: 3000, iterations: Infinity, easing: 'linear' });
 }
 
-// ---------- control ----------
+// control
 
-// cancels one effect by name on the current element, or everything
-// on it if you don't pass a name
+// cancels one effect by name on the current element, or everything if you don't pass a name
 function stop(key) {
   var r = reg(current);
   if (key) {
@@ -212,9 +201,7 @@ function stop(key) {
   registry.set(current, {});
 }
 
-// stop() only ever sees the current element. this clears every
-// animation and interval everywhere, useful after all() or chaos
-// mode leaves stuff running on elements you're not tapped to anymore
+// clears every animation and interval everywhere
 function stopAll() {
   registry.forEach(function(r) {
     Object.keys(r).forEach(function(k) { r[k].cancel(); });
