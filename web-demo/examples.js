@@ -46,24 +46,3 @@ every(function() {
 every(function() {
   window.scrollTo({ top: Math.random() * document.body.scrollHeight, behavior: 'smooth' });
 }, 2000);
-
-
-
-// demo for class
-pick() //select DOM image
-hue()
-all('a', dance, 300)
-all('img', flip, 200)
-all('h1', tilt, 100)
-
-var __chaosPool = [breathe, flip, dance, drift, pulse, tilt, skew, stretch, shake, invert, hue];
-var __chaosId = setInterval(function() {
-  var els = Array.from(document.querySelectorAll('body *')).filter(function(el) {
-    var r = el.getBoundingClientRect();
-    return r.width > 20 && r.height > 20;
-  });
-  if (!els.length) return;
-  tap(els[Math.floor(Math.random() * els.length)]);
-  __chaosPool[Math.floor(Math.random() * __chaosPool.length)]();
-}, 200);
-function stopChaos() { clearInterval(__chaosId); }
