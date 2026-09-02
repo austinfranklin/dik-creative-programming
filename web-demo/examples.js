@@ -26,7 +26,7 @@ var __chaosId = setInterval(function() {
   if (!els.length) return;
   tap(els[Math.floor(Math.random() * els.length)]);
   __chaosPool[Math.floor(Math.random() * __chaosPool.length)]();
-}, 400);
+}, 200);
 function stopChaos() { clearInterval(__chaosId); }
 
 // ---- The rest of these repurpose the same tools for something they
@@ -46,15 +46,6 @@ every(function() {
   v8.currentTime = Math.max(0, scratchStart + Math.sin(Date.now() / 1000) * 1.5);
 }, 50);
 // stopAll() to end both the scrub and the shake together.
-
-
-// 9. VOLUME TREMOLO — native .volume oscillating. No Web Audio, no
-//    filters, just the element's own property, wobbling.
-var v9 = document.querySelector('video');
-every(function() {
-  v9.volume = (Math.sin(Date.now() / 200) + 1) / 2;
-}, 30);
-
 
 // 10. WARPED TAPE — playbackRate wobbling with preservesPitch turned
 //     off, so speed changes actually bend the pitch, like a dying
