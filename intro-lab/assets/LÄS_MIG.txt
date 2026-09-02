@@ -1,0 +1,16 @@
+Hej!
+
+I den här mappen ska du lägga dina bildfiler (bitmap-bilder som .png eller .jpg) för din storyboard.
+Mallkoden i `sketch.js` är förinställd att ladda följande bilder från denna mapp:
+
+1. `austin.png` - Bild på läraren Austin
+2. `anders.png` - Bild på läraren Anders
+3. `mattias.png` - Bild på läraren Mattias
+4. `martin.png` - Bild på läraren Martin
+5. `skola.png` - Bild på skolan (används i sista scenen)
+
+Om du vill använda andra filnamn eller lägga till fler bilder kan du ändra i funktionen `preload()` och arrayen `scenes` i `sketch.js`.
+
+För att kunna visa projektet i en webbläsare behöver du köra en lokal server. I VSCode, ladda ner ett tillägg som heter "Live Server" av Ritwick Dey. Du kan sedan använda knappen "Go Live" längst ner i redigeraren för att starta servern.
+
+Lycka till med uppgiften!
