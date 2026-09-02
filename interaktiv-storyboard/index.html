@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Studentuppgift: Interaktiv Storyboard med p5.js</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+</head>
+<body>
+
+  <header>
+    <h1 id="page-title">Interaktiv Storyboard</h1>
+    <p class="subtitle" id="page-subtitle">Modifiera koden för att skapa din egen animerade berättelse</p>
+  </header>
+
+  <main>
+    <div id="canvas-container"></div>
+    <div class="interaction-hint" id="interaction-hint">Klicka på spelytan ovan för att gå framåt i berättelsen!</div>
+
+    <section class="instructions-card" id="instructions-section">
+      
+      <h2>1. Kom igång (Setup)</h2>
+      <p>Följ dessa steg för att starta projektet på din dator:</p>
+      <ol>
+        <li>Ladda ned och packa upp projektmappen <code>interaktiv-storyboard</code>.</li>
+        <li>Öppna mappen i <strong>Visual Studio Code</strong> (File &gt; Open Folder).</li>
+        <li>Installera tillägget <strong>Live Server</strong> av Ritwick Dey (klicka på byggkloss-ikonen i vänstermenyn, sök efter Live Server och klicka på Install).</li>
+        <li>Starta den lokala servern genom att högerklicka på <code>index.html</code> och välja <strong>"Open with Live Server"</strong> (eller klicka på "Go Live" längst ned i fönstret). Projektet öppnas i din webbläsare!</li>
+      </ol>
+
+      <div class="highlight-box">
+        <p><strong>Vad består projektet av?</strong></p>
+        <p>• <code>index.html</code>: Bygger upp struktur och text på webbsidan.</p>
+        <p>• <code>styles.css</code>: Bestämmer utseende, färger och layout.</p>
+        <p>• <code>sketch.js</code>: Innehåller logik, animationer och berättelse.</p>
+        <p>• <code>assets mappen</code>: När all bilderna finns.</p>
+        <p><em>Obs: Du behöver bara redigera filen <code>sketch.js</code> i den här uppgiften!</em></p>
+      </div>
+
+      <h2>2. Grundläggande syntax & tips</h2>
+      <div class="highlight-box">
+        <p><strong>Viktiga sökvägar och kortkommandon:</strong></p>
+        <p>• <strong>Sök i koden:</strong> Tryck <code>Cmd + F</code> (macOS) eller <code>Ctrl + F</code> (Windows) i VS Code för att snabbt söka efter text, t.ex. <code>// STUDENT:</code>.</p>
+        <p>• <strong>Spara & Ångra:</strong> Spara filen med <code>Cmd + S</code> / <code>Ctrl + S</code>. Ångra misstag med <code>Cmd + Z</code> / <code>Ctrl + Z</code>.</p>
+        <p>• <strong>Kommatecken (<code>,</code>):</strong> Alla värden i ett objekt (inuti <code>{}</code>) separeras med kommatecken. Glöm inte komma mellan element i listor!</p>
+        <p>• <strong>Semikolon (<code>;</code>):</strong> Avslutar enskilda kodrader och instruktioner.</p>
+        <p>• <strong>Skiftlägeskänslighet:</strong> JavaScript skiljer på stora och små bokstäver. <code>imgName</code> och <code>imgname</code> behandlas inte som samma sak.</p>
+        <p>• <strong>Kommentarer (<code>//</code>):</strong> Rader som börjar med <code>//</code> körs inte av datorn. De är till för att förklara koden.</p>
+      </div>
+
+      <h2>3. Canvas & Koordinatsystem</h2>
+      <p>
+        Ritytan (Canvas) i projektet har storleken <strong>800 × 600 pixlar</strong> (Bredd: 800px, Höjd: 600px).
+      </p>
+      <p>
+        Datorgrafik använder ett koordinatsystem där origo <code>(x: 0, y: 0)</code> ligger i det <strong>översta vänstra hörnet</strong>:
+      </p>
+      <ul>
+        <li><code>x = 0</code> är längst till vänster, <code>x = 800</code> är längst till höger.</li>
+        <li><code>y = 0</code> är längst upp, <code>y = 600</code> är längst ned.</li>
+        <li>Positionen <code>(x: 400, y: 300)</code> är exakt i mitten av skärmen.</li>
+      </ul>
+
+      <h2>4. Dina uppgifter</h2>
+      <div class="grid-tasks">
+        
+        <div class="task-item">
+          <div class="task-title">1. Lägg till egna bilder</div>
+          <div class="task-desc">Placera dina bildfiler i mappen <code>assets/</code>. Ändra bildnamnet i <code>sketch.js</code> till ditt eget filnamn (t.ex. en groda eller en cykel). Kom ihåg kommatecknet efter raden!</div>
+          <div class="code-block">
+            <pre><code>imgName: 'min_bild.jpg', // Kommatecken i slutet!</code></pre>
+          </div>
+          <div class="task-desc"><strong>UTMANING (Frivillig):</strong> Hur justerar du bildens storlek så att bildförhållandet (aspect ratio) bevaras när den skalas upp eller ned? Använd koden nedan. Vad mer måste ändras i funktionen <code>ritaElement()</code> för att detta ska fungera?</div>
+          <div class="code-block">
+            <pre><code>let skala = min(w / img.width, h / img.height);</code></pre>
+          </div>
+        </div>
+
+        <div class="task-item">
+          <div class="task-title">2. Skapa nya scener</div>
+          <div class="task-desc">Lägg till fler scener i listan <code>scener</code>. Kopiera mallen nedan och klistra in i koden. Glöm inte kommatecknet mellan scen-objekten!</div>
+          <div class="code-block">
+            <pre><code>{
+  text: "Skriv din egen text här!",
+  background: "#c084fc",
+  elements: [
+    { imgName: 'min_bild.jpg', startX: 100, startY: 300, endX: 400, endY: 300, width: 100, height: 100 }
+  ]
+},</code></pre>
+          </div>
+          <div class="task-desc"><strong>UTMANING (Frivillig):</strong> Just nu varar alla scener exakt lika länge (<code>SCEN_DURATION</code>). Hur kan du ändra koden så att specifika scener stannar längre på skärmen än andra? <br><em>Tips: Överväg att lägga till en egenskap som <code>duration</code> inuti scen-objektet (t.ex. <code>duration: 240</code>) och läsa av det värdet inuti <code>draw()</code> istället för att använda en enda global konstant.</em></div>
+        </div>
+
+        <div class="task-item">
+          <div class="task-title">3. Animera rörelser</div>
+          <div class="task-desc">Ändra <code>startX</code>, <code>startY</code>, <code>endX</code> och <code>endY</code> för att flytta dina objekt över skärmen.</div>
+          <div class="task-desc"><strong>UTMANING (Frivillig):</strong> Hur kan du animera storleken på bilderna under scenens gång? Tänk på hur <code>lerp()</code> används i koden för positionen.</div>
+        </div>
+
+        <div class="task-item">
+          <div class="task-title">4. Easing</div>
+          <div class="task-desc">Om du vill ha en mjukare och mer naturlig rörelse i animationen kan du aktivera mjukgörning (easing). Ta bort kommentarstecknen (<code>//</code>) framför följande rad i <code>draw()</code>:</div>
+          <div class="code-block">
+            <pre><code>t = t * t * (3 - 2 * t);</code></pre>
+          </div>
+          <div class="task-desc"><strong>UTMANING (Frivillig):</strong> Vad representerar variabeln <code>t</code> i beräkningen, och hur påverkar matten i koden hastigheten i början och slutet av rörelsen?</div>
+        </div>
+        <div class="task-item">
+          <div class="task-title">5. Designa scenens stämning & komposition</div>
+          <div class="task-desc">Använd färger och placering för att förstärka berättelsens känsla och stämning. Testa att byta ut färgkoder (t.ex. <code>"#1e1b11"</code>) mot egna färgpaletter som passar scenens ton (t.ex. varma varningstoner, kalla nattfärger eller lugna pasteller). Du kan gör denna <a href="https://htmlcolorcodes.com/color-picker/">websidan</a> att välja färgen.</div>
+          
+          <div class="code-block">
+            <pre><code>// Experimentera med färger och placering:
+        background: "#0f172a", // Ändra HEX-koden för att skapa rätt stämning!
+        elements: [
+          // Tänk på komposition: Skapa balans genom bildernas placering och storlek
+          { imgName: 'figur.png', startX: 100, startY: 450, endX: 400, endY: 200, width: 150, height: 150 }
+        ]</code></pre>
+          </div>
+
+          <div class="task-desc"><strong>UTMANING (Frivillig):</strong> Hur kan du använda visuell hierarki och "kontrast" för att dra blicken till den mest viktiga figuren i scenen? <br><em>Tips: Testa att göra huvudkaraktären större (t.ex. <code>width: 150</code>) än bakgrundskaraktärerna (t.ex. <code>width: 70</code>) eller låta den rörliga figuren korsa hela skärmen.</em></div>
+        </div>
+      </div>
+
+      <h2 style="margin-top: 1.5rem;">Exempelkod för en scen</h2>
+      <div class="code-block">
+        <pre><code>{
+  text: "Austin och Anders har kommit fram till skolan!",
+  backgroundImageName: "skola.jpg",
+  elements: [
+    { imgName: "austin.jpg", startX: -100, startY: 450, endX: 250, endY: 450, width: 90, height: 90 },
+    { imgName: "anders.jpg", startX: 900, startY: 450, endX: 350, endY: 450, width: 90, height: 90 }
+  ]
+}</code></pre>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Utvecklad för Södertörns högskola &copy; 2026</p>
+  </footer>
+
+  <script src="sketch.js"></script>
+</body>
+</html>
