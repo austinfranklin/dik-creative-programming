@@ -1,7 +1,3 @@
-// paste this whole thing into the console first, then call whatever you want
-
-// ---------- core ----------
-
 // this is what every effect points at until you call tap()
 var current = document.body;
 
