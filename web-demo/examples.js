@@ -20,7 +20,7 @@ var __chaosId = setInterval(function() {
 }, 200);
 function stopChaos() { clearInterval(__chaosId); }
 
-// dj scrath effect with youtube video
+// dj scratch effect with youtube video
 var v8 = document.querySelector('video');
 var scratchStart = v8.currentTime;
 tap(document.body);

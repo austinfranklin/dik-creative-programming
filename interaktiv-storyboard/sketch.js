@@ -6,17 +6,22 @@ const SCEN_DURATION = 120;
 // STUDENT: Redigera eller lägg till scener i listan nedan!
 // Tänk på syntax: separera egenskaper med komma (,) och rader med semikolon (;) när du skapar nya variabler.
 let scener = [
+  // scene 1
   {
+    duration: 20,
     text: "Lärarnas väg till skolan. Klicka på spelytan för att starta!",
     background: "#1e1b11",
     elements: [
-      { imgName: 'austin.jpg', startX: 180, startY: 300, endX: 180, endY: 300, width: 100, height: 100 },
+      { imgName: 'austin.jpg', startX: 180, startY: 300, endX: 180, endY: 300, width: 100, height: 100, rotation: 90 },
       { imgName: 'anders.jpg', startX: 320, startY: 300, endX: 320, endY: 300, width: 100, height: 100 },
       { imgName: 'mattias.png', startX: 480, startY: 300, endX: 480, endY: 300, width: 100, height: 100 },
       { imgName: 'martin.jpg', startX: 620, startY: 300, endX: 620, endY: 300, width: 100, height: 100 }
     ]
   },
+
+  // scene 2
   {
+    duration: 10,
     text: "Austin promenerar till fots. En skön morgonpromenad ger energi!",
     background: "#87CEEB",
     elements: [
@@ -24,6 +29,27 @@ let scener = [
     ]
   },
   {
+    duration: 800,
+    text: "Austin promenerar till fots. En skön morgonpromenad ger energi!",
+    background: "#87CEEB",
+    elements: [
+      { imgName: 'austin.jpg', startX: 300, startY: 380, endX: 300, endY: 100, width: 120, height: 120 }
+    ]
+  },
+
+
+  {
+    duration: 200,
+    text: "Austin promenerar till fots. En skön morgonpromenad ger energi!",
+    background: "#87CEEB",
+    elements: [
+      { imgName: 'austin.jpg', startX: -100, startY: 380, endX: 300, endY: 380, width: 120, height: 120 }
+    ]
+  },
+
+
+  {
+    duration: 30,
     text: "Anders cyklar i full fart! Miljövänligt och bra för konditionen.",
     background: "#a7f3d0",
     elements: [
@@ -31,6 +57,7 @@ let scener = [
     ]
   },
   {
+    duration: 100,
     text: "Mattias tar bussen. Perfekt tid för att läsa en bra bok!",
     background: "#bfdbfe",
     elements: [
@@ -38,13 +65,15 @@ let scener = [
     ]
   },
   {
+    duration: 250,
     text: "Martin flyger helikopter! Lite extremt, men han kommer garanterat i tid.",
-    background: "#c084fc",
+    backgroundImageName: "skola.jpg",
     elements: [
       { imgName: 'martin.jpg', startX: -150, startY: 100, endX: 500, endY: 200, width: 130, height: 130 }
     ]
   },
   {
+    duration: 400,
     text: "Alla har kommit fram till Södertörns högskola! Dags att föreläsa. (Klicka för att börja om)",
     backgroundImageName: "skola.jpg",
     elements: [
@@ -82,7 +111,7 @@ function draw() {
   }
   
   let förflutnaRamar = frameCount - scenStartRam;
-  let t = constrain(förflutnaRamar / SCEN_DURATION, 0, 1);
+  let t = constrain(förflutnaRamar / scen.duration, 0, 1);
   
   // STUDENT: Ta bort // i början av raden nedan för att aktivera easing!
   // t = t * t * (3 - 2 * t);
@@ -93,29 +122,33 @@ function draw() {
       let x = lerp(el.startX, el.endX, t);
       let y = lerp(el.startY, el.endY, t);
       
-      ritaElement(el.imgName, x, y, el.width, el.height);
+      ritaElement(el.imgName, x, y, el.width, el.height, el.rotation);
     }
   }
   
   ritaTextRuta(scen.text);
 }
 
-function ritaElement(filnamn, x, y, w, h) {
+function ritaElement(filnamn, x, y, w, h, r = 0) {
+  push();
+  translate(x, y);
+  rotate(radians(r));
+
   let img = bilder[filnamn];
   if (img && img.isLoaded) {
-    image(img, x, y, w, h);
-    return;
+    image(img, 0, 0, w, h);
+  } else {
+    let namn = filnamn.split('.')[0];
+    stroke(255);
+    strokeWeight(2);
+    ellipse(0, 0, w || 100);
+
+    fill(255);
+    noStroke();
+    textSize(14);
+    textAlign(CENTER, CENTER);
+    text(namn.charAt(0).toUpperCase() + namn.slice(1), 0, 0);
   }
-  let namn = filnamn.split('.')[0];
-  push();
-  stroke(255);
-  strokeWeight(2);
-  ellipse(x, y, w || 100);
-  fill(255);
-  noStroke();
-  textSize(14);
-  textAlign(CENTER, CENTER);
-  text(namn.charAt(0).toUpperCase() + namn.slice(1), x, y);
   pop();
 }
 
